@@ -1,22 +1,19 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import  EnterNewWord from '../components/enterNewWord'
-import Char from '../components/char'
-import Hearts from '../components/hearts'
-import Keyboard from '../components/keyboard'
-import Hangman from '../components/hangman'
-import { useState,
-  useRef,
-  useEffect} from 'react'
+import Head from "next/head";
+import Image from "next/image";
+import styles from "../styles/Home.module.css";
+import EnterNewWord from "../components/enterNewWord";
+import Char from "../components/char";
+import Hearts from "../components/hearts";
+import Keyboard from "../components/keyboard";
+import Hangman from "../components/hangman";
+import { useState, useRef, useEffect } from "react";
 export default function Home() {
   return (
     <div className={styles.container}>
-     <App/>
+      <App />
     </div>
-  )
+  );
 }
-
 
 function App() {
   //searched word
@@ -30,7 +27,7 @@ function App() {
   //match words and inputs arr and display it
   let [match, setMatch] = useState([]);
   //keys form keyboard
-  let[newGame,setNewGame]=useState(false)
+  let [newGame, setNewGame] = useState(false);
   //keys values
   let keys = [
     "q",
@@ -58,11 +55,9 @@ function App() {
     "v",
     "b",
     "n",
-    "m"
+    "m",
   ];
-  
-  
-  
+
   //lives
   let [lives, setLives] = useState(6);
 
@@ -111,30 +106,30 @@ function App() {
   useEffect(() => {
     if (word.split("").includes(suggest) == false) {
       setLives((prev) => {
-        if(prev===1){
-          setEnd(true)
-          setLives(0)
-        }else{
-            return prev - 1;   
-          }
-      
+        if (prev === 1) {
+          setEnd(true);
+          setLives(0);
+        } else {
+          return prev - 1;
+        }
       });
     }
   }, [suggest]);
 
   return (
     <div className="App relative p-5 flex flex-col gap-16  justify-center items-center">
-    
-     {isEnd && <EnterNewWord
-                 setter={setWord}
-                 resetMatchs={setMatch}
-                 resetInputs={setInputs}
-                 resetSuggests={setSuggest}
-                 resetLives={setLives}
-                 resetEnd={setEnd}
-                 word={word}
-                 />}
-      
+      {isEnd && (
+        <EnterNewWord
+          setter={setWord}
+          resetMatchs={setMatch}
+          resetInputs={setInputs}
+          resetSuggests={setSuggest}
+          resetLives={setLives}
+          resetEnd={setEnd}
+          word={word}
+        />
+      )}
+
       <div className="absolute gap-3 flex top-3 right-3">
         <Hearts lives={lives} />
       </div>
@@ -145,13 +140,14 @@ function App() {
         {word.split("").map((char, index) => {
           return (
             <div
+              key={index}
               style={{
                 borderBottom: char != " " && "solid 1px black",
                 width: "35px",
                 height: "35px",
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center"
+                alignItems: "center",
               }}
             >
               <Char
@@ -179,6 +175,7 @@ function App() {
           {keys.map((key) => {
             return (
               <Keyboard
+                key={Math.random()*5000}
                 disabled={match.includes(key)}
                 clickHandler={(e) => {
                   setSuggest(e.target.innerText);
